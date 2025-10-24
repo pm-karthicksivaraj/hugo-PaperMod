@@ -27,6 +27,7 @@
       {{- partial "post_canonical.html" . -}}
     </div>
     {{- end }}
+
   </header>
   {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
@@ -42,6 +43,21 @@
   </div>
   {{- end }}
 
+  <div class="floating-share">
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{ .Permalink | absURL }}&amp;title={{ .Title }}&amp;summary={{ .Summary }}&amp;source={{ .Site.Title }}" class="share-btn linkedin" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink | absURL }}" class="share-btn facebook" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://twitter.com/intent/tweet?url={{ .Permalink | absURL }}&amp;text={{ .Title }}" class="share-btn twitter" target="_blank" rel="noopener noreferrer">
+      <i class="fab fa-x-twitter"></i>
+    </a>
+    <a href="#" onclick="copyToClipboard(); return false;" class="share-btn general">
+      Share
+    </a>
+  </div>
+
   <footer class="post-footer">
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
     <ul class="post-tags">
@@ -56,6 +72,16 @@
     {{- partial "share_icons.html" . -}}
     {{- end }}
   </footer>
+  <!-- Small JS for the "Share" button to copy the link (added here, at the end of the article) -->
+  <script>
+    function copyToClipboard() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
 
   {{- if (.Param "comments") }}
   {{- partial "comments.html" . }}
